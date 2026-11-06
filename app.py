@@ -28,7 +28,7 @@ def main():
     return
 
   conn = sqlite3.connect(db_path)
-  st.title("🎤 Underground Idol Benefit & Point Query System")
+  st.title("🎤 台灣日系地下偶像拍券價格/特典點數使用規則查詢系統")
   st.caption(
       "Database Management Final Project: Python + SQLite (3NF Relational"
       " Database)"
