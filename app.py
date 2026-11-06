@@ -29,10 +29,7 @@ def main():
 
   conn = sqlite3.connect(db_path)
   st.title("🎤 台灣日系地下偶像拍券/特典點數使用規則查詢系統")
-  st.caption(
-      "Database Management Final Project: Python + SQLite (3NF Relational"
-      " Database)"
-  )
+  
 
   df_cats = pd.read_sql("SELECT * FROM categories", conn)
   if df_cats.empty:
