@@ -90,7 +90,7 @@ def main():
     with c3:
       offers = idol_row.get("special_offers")
       st.warning(
-          f"**🎁 Special Offers (※)**\n\n{offers if pd.notna(offers) and offers else '(None)'}"
+          f"**🎁 Special Offers**\n\n{offers if pd.notna(offers) and offers else '(None)'}"
       )
 
     df_items = pd.read_sql(
