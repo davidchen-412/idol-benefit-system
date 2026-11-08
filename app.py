@@ -39,7 +39,7 @@ def main():
 
   tab1, tab2, tab3 = st.tabs([
       "📋 偶像種類與清單選擇查詢",
-      "🔎 進階搜尋與特典兌換項目篩選",
+      "🔎 特典兌換項目進階搜尋與篩選",
       "🎁 初見無料與特別優惠查詢",
   ])
 
@@ -145,7 +145,7 @@ def main():
 
   # === Tab 2: 跨團進階搜尋與過濾 ===
   with tab2:
-    st.subheader("🔎 Advanced Cross-Group Search & Filter")
+    st.subheader("🔎 特典兌換項目進階搜尋與篩選")
     st.markdown(
         "Combine keywords and ticket price filters to search across all"
         " categories simultaneously."
@@ -197,7 +197,7 @@ def main():
 
   # === Tab 3: 初見無料與特別優惠速查 ===
   with tab3:
-    st.subheader("🎁 First-Time Free & Volume Discount Offers")
+    st.subheader("🎁 初見無料與特別優惠速查")
     df_offers = pd.read_sql(
         """
             SELECT 
