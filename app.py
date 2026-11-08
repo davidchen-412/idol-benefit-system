@@ -14,7 +14,7 @@ def ensure_db_initialized(db_path="idol_benefits.db"):
 
 def main():
   st.set_page_config(
-      page_title="Idol Benefit & Point Query System",
+      page_title="台灣日系地下偶像拍券/特典點數使用規則查詢系統",
       page_icon="🎤",
       layout="wide",
   )
@@ -47,7 +47,7 @@ def main():
   with tab1:
     col_nav1, col_nav2 = st.columns([1, 2])
     with col_nav1:
-      st.subheader("1. Select Category")
+      st.subheader("1. 選擇偶像種類")
       cat_map = dict(zip(df_cats["category_name"], df_cats["category_id"]))
       selected_cat = st.radio("Choose category:", list(cat_map.keys()))
 
