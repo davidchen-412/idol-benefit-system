@@ -85,7 +85,7 @@ def main():
       t_name = idol_row["ticket_name"] or "(None)"
       p_rule = idol_row["point_rule"] or "(None)"
       st.success(
-          f"**🎟️特典券名稱: {t_name}**\n\n**Point Rule:**\n{p_rule}"
+          f"**🎟️特典券名稱: {t_name}**\n\n**兌換規則:**\n{p_rule}"
       )
     with c3:
       offers = idol_row.get("special_offers")
@@ -104,7 +104,7 @@ def main():
         params=(int(idol_row["idol_id"]),),
     )
 
-    st.markdown("#### 🏆 Redemption Items & Tiers")
+    st.markdown("#### 🏆 特典券集點兌換項目")
     if df_items.empty:
       st.caption("No redemption items available.")
     else:
