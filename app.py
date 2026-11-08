@@ -49,7 +49,7 @@ def main():
     with col_nav1:
       st.subheader("1. 選擇偶像種類")
       cat_map = dict(zip(df_cats["category_name"], df_cats["category_id"]))
-      selected_cat = st.radio("Choose category:", list(cat_map.keys()))
+      
 
     df_idols = pd.read_sql(
         "SELECT * FROM idols WHERE category_id = ?",
