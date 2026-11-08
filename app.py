@@ -40,7 +40,7 @@ def main():
   tab1, tab2, tab3 = st.tabs([
       "📋 偶像種類與清單選擇查詢",
       "🔎 特典兌換項目進階搜尋與篩選",
-      "🎁 初見無料與特別優惠查詢",
+      "🎁 初見無料與特殊優惠查詢",
   ])
 
   # === Tab 1: 依分類與偶像清單選擇查詢 ===
@@ -197,7 +197,7 @@ def main():
 
   # === Tab 3: 初見無料與特別優惠速查 ===
   with tab3:
-    st.subheader("🎁 初見無料與特別優惠速查")
+    st.subheader("🎁 初見無料與特殊優惠查詢")
     df_offers = pd.read_sql(
         """
             SELECT 
