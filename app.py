@@ -58,14 +58,14 @@ def main():
     )
 
     with col_nav2:
-      st.subheader("2. Select Idol / Group")
+      st.subheader("2. 選擇偶像名稱")
       if df_idols.empty:
         st.info("No records available in this category.")
         conn.close()
         return
       idol_map = dict(zip(df_idols["idol_name"], df_idols["idol_id"]))
       selected_idol = st.selectbox(
-          f"Choose from {selected_cat}:", list(idol_map.keys())
+          f"選擇 {selected_cat}:", list(idol_map.keys())
       )
 
     idol_row = df_idols[df_idols["idol_id"] == idol_map[selected_idol]].iloc[0]
