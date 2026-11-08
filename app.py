@@ -65,7 +65,7 @@ def main():
         return
       idol_map = dict(zip(df_idols["idol_name"], df_idols["idol_id"]))
       selected_idol = st.selectbox(
-          f"選擇 {selected_cat}:", list(idol_map.keys())
+          f"選擇{selected_cat}(可點選下滑式清單or直接打字搜尋):", list(idol_map.keys())
       )
 
     idol_row = df_idols[df_idols["idol_id"] == idol_map[selected_idol]].iloc[0]
