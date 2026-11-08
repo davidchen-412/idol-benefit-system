@@ -201,10 +201,10 @@ def main():
     df_offers = pd.read_sql(
         """
             SELECT 
-                c.category_name AS 'Category',
-                i.idol_name AS 'Name',
-                i.base_ticket_price AS 'Base Price',
-                i.special_offers AS 'Special Offers (※)',
+                c.category_name AS '偶像種類',
+                i.idol_name AS '名稱',
+                i.special_offers AS '特殊優惠',
+                i.base_ticket_price AS '拍券價格',
                 COALESCE(i.remarks, '') AS 'Remarks'
             FROM idols i
             JOIN categories c ON i.category_id = c.category_id
