@@ -65,7 +65,7 @@ def main():
         return
       idol_map = dict(zip(df_idols["idol_name"], df_idols["idol_id"]))
       selected_idol = st.selectbox(
-          f"選擇{selected_cat}(可點選下滑式清單or直接打字搜尋):", list(idol_map.keys())
+          f"選擇{selected_cat}(可點選進入下滑式清單or直接打字搜尋):", list(idol_map.keys())
       )
 
     idol_row = df_idols[df_idols["idol_id"] == idol_map[selected_idol]].iloc[0]
@@ -74,23 +74,23 @@ def main():
     st.subheader(f"✨ {idol_row['idol_name']}")
 
     if pd.notna(idol_row["remarks"]) and str(idol_row["remarks"]).strip():
-      st.error(f"**⚠️ Remarks / Alerts:** {idol_row['remarks']}")
+      st.error(f"**⚠️備註:** {idol_row['remarks']}")
 
     c1, c2, c3 = st.columns(3)
     with c1:
       st.info(
-          f"**💰 Base Ticket Price**\n\n{idol_row['base_ticket_price'] or '(N/A)'}"
+          f"**💰拍券價格**\n\n{idol_row['base_ticket_price'] or '(N/A)'}"
       )
     with c2:
       t_name = idol_row["ticket_name"] or "(None)"
       p_rule = idol_row["point_rule"] or "(None)"
       st.success(
-          f"**🎟️ Ticket/Card Name: {t_name}**\n\n**Point Rule:**\n{p_rule}"
+          f"**🎟️特典券名稱: {t_name}**\n\n**Point Rule:**\n{p_rule}"
       )
     with c3:
       offers = idol_row.get("special_offers")
       st.warning(
-          f"**🎁 Special Offers**\n\n{offers if pd.notna(offers) and offers else '(None)'}"
+          f"**🎁特殊優惠**\n\n{offers if pd.notna(offers) and offers else '(None)'}"
       )
 
     df_items = pd.read_sql(
