@@ -83,7 +83,7 @@ def main():
       )
     with c2:
       t_name = idol_row["ticket_name"] or "(None)"
-      p_rule = idol_row["兌換規則"] or "(None)"
+      p_rule = idol_row["point_rule"] or "(None)"
       st.success(
           f"**🎟️特典券名稱: {t_name}**\n\n**Point Rule:**\n{p_rule}"
       )
