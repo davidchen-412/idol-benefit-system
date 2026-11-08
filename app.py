@@ -38,9 +38,9 @@ def main():
     return
 
   tab1, tab2, tab3 = st.tabs([
-      "📋 Category & Idol Directory",
-      "🔎 Advanced Search & Budget Filter",
-      "🎁 First-Time Free & Special Offers",
+      "📋 依偶像分類與清單選擇查詢",
+      "🔎 進階搜尋與兌換項目篩選",
+      "🎁 初見無料與特別優惠查詢",
   ])
 
   # === Tab 1: 依分類與偶像清單選擇查詢 ===
