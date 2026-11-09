@@ -199,11 +199,12 @@ def main():
                 c.category_name AS '偶像種類',
                 i.idol_name AS '名稱',
                 i.special_offers AS '特殊優惠',
-                i.base_ticket_price AS '拍券價格',
+                i.base_ticket_price AS '基本拍券價格',
+                COALESCE(i.remarks, '') AS '備註'
             FROM idols i
             JOIN categories c ON i.category_id = c.category_id
             WHERE i.special_offers IS NOT NULL
-    """,
+        """,
         conn,
     )
     st.dataframe(df_offers, use_container_width=True, hide_index=True)
