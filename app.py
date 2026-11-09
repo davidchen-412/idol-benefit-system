@@ -136,7 +136,7 @@ def main():
 
       filtered["Threshold"] = filtered.apply(format_threshold, axis=1)
       st.dataframe(
-          filtered[["Threshold", "Reward Description"]].rename(
+          filtered[["Threshold", "reward_content"]].rename(
               columns={"reward_content": "Reward Description"}
           ),
           use_container_width=True,
