@@ -151,7 +151,7 @@ def main():
     col_s1, col_s2, col_s3 = st.columns([2, 1, 1])
     with col_s1:
         kw = st.text_input(
-            "關鍵字搜尋 (例如：私物簽, 影片, 快速通關, 手寫信):", "私物簽"
+            "關鍵字搜尋 (例如：手機拍, 影片, 私物簽, 快速通關, 手寫信, OFF會):", "私物簽"
         )
     with col_s2:
         category_filter = st.selectbox(
