@@ -170,7 +170,6 @@ def main():
             r.required_amount AS '需求數量',
             r.unit AS '單位',
             r.reward_content AS '可兌換內容',
-            i.base_ticket_price AS '拍券價格'
         FROM redemption_items r
         JOIN idols i ON r.idol_id = i.idol_id
         JOIN categories c ON i.category_id = c.category_id
