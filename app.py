@@ -190,7 +190,7 @@ def main():
     sql_join += " ORDER BY r.required_amount ASC"
 
     df_search = pd.read_sql(sql_join, conn, params=params)
-    st.write(f"共找到 **{len(df_search)}** 筆符合條件的特典兌換項目：")
+    st.write(f"共找到 **{len(df_search)}** 筆符合條件的特典兌換項目 (可點選下方表格看完整內容)：")
     st.dataframe(df_search, use_container_width=True, hide_index=True)
 
   # === Tab 3: 初見無料與特別優惠速查 ===
