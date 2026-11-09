@@ -106,7 +106,7 @@ def main():
 
     st.markdown("#### 🏆 特典券集點兌換項目")
     if df_items.empty:
-      st.caption("No redemption items available.")
+      st.caption("暫無資料")
     else:
       valid_amounts = df_items["required_amount"].dropna()
       if not valid_amounts.empty and int(valid_amounts.max()) > 0:
