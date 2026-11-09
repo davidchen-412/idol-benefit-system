@@ -29,7 +29,6 @@ def main():
 
   conn = sqlite3.connect(db_path)
   st.title("🎤 台灣日系地下偶像拍券/特典點數使用規則查詢系統")
-  
 
   df_cats = pd.read_sql("SELECT * FROM categories", conn)
   if df_cats.empty:
@@ -65,7 +64,8 @@ def main():
         return
       idol_map = dict(zip(df_idols["idol_name"], df_idols["idol_id"]))
       selected_idol = st.selectbox(
-          f"選擇{selected_cat} (可點選進入下滑式清單or直接打字搜尋):", list(idol_map.keys())
+          f"選擇{selected_cat} (可點選進入下滑式清單or直接打字搜尋):",
+          list(idol_map.keys()),
       )
 
     idol_row = df_idols[df_idols["idol_id"] == idol_map[selected_idol]].iloc[0]
@@ -78,15 +78,11 @@ def main():
 
     c1, c2, c3 = st.columns(3)
     with c1:
-      st.info(
-          f"**💰拍券價格**\n\n{idol_row['base_ticket_price'] or '(N/A)'}"
-      )
+      st.info(f"**💰拍券價格**\n\n{idol_row['base_ticket_price'] or '(N/A)'}")
     with c2:
       t_name = idol_row["ticket_name"] or "(None)"
       p_rule = idol_row["point_rule"] or "(None)"
-      st.success(
-          f"**🎟️特典券名稱: {t_name}**\n\n**兌換規則:**\n{p_rule}"
-      )
+      st.success(f"**🎟️特典券名稱: {t_name}**\n\n**兌換規則:**\n{p_rule}")
     with c3:
       offers = idol_row.get("special_offers")
       st.warning(
@@ -95,10 +91,10 @@ def main():
 
     df_items = pd.read_sql(
         """
-            SELECT required_amount, unit, reward_content 
-            FROM redemption_items 
-            WHERE idol_id = ? 
-            ORDER BY CASE WHEN required_amount IS NULL THEN 1 ELSE 0 END, required_amount ASC
+        SELECT required_amount, unit, reward_content 
+        FROM redemption_items 
+        WHERE idol_id = ? 
+        ORDER BY CASE WHEN required_amount IS NULL THEN 1 ELSE 0 END, required_amount ASC
         """,
         conn,
         params=(int(idol_row["idol_id"]),),
@@ -137,46 +133,52 @@ def main():
       filtered["Threshold"] = filtered.apply(format_threshold, axis=1)
       st.dataframe(
           filtered[["Threshold", "reward_content"]].rename(
-              columns={"Threshold": "累積數量", "reward_content": "兌換項目 (可點選下方表格看完整內容)"}
+              columns={
+                  "Threshold": "累積數量",
+                  "reward_content": "兌換項目 (可點選下方表格看完整內容)",
+              }
           ),
           use_container_width=True,
           hide_index=True,
       )
 
-# === Tab 2: 跨團進階搜尋與過濾 ===
+  # === Tab 2: 跨團進階搜尋與過濾 ===
   with tab2:
     st.subheader("🔎 特典兌換項目進階搜尋與篩選")
-    st.markdown("結合關鍵字、偶像種類與擁有的點數/張數上限，跨分類同步搜尋所有特典兌換項目。")
+    st.markdown(
+        "結合關鍵字、偶像種類與擁有的點數/張數上限，跨分類同步搜尋所有特典兌換項目。"
+    )
 
     col_s1, col_s2, col_s3 = st.columns([2, 1, 1])
     with col_s1:
-        kw = st.text_input(
-            "關鍵字搜尋 (例如：手機拍, 影片, 私物簽, 快速通關, 手寫信, OFF會):", "私物簽"
-        )
+      kw = st.text_input(
+          "關鍵字搜尋 (例如：手機拍, 影片, 私物簽, 快速通關, 手寫信, OFF會):",
+          "私物簽",
+      )
     with col_s2:
-        category_filter = st.selectbox(
-            "選擇偶像種類 (團體/個人):", ["全部"] + list(cat_map.keys())
-        )
+      category_filter = st.selectbox(
+          "選擇偶像種類 (團體/個人):", ["全部"] + list(cat_map.keys())
+      )
     with col_s3:
-        max_limit = st.number_input(
-            "擁有的最大值 (pt/張) (<= N):", min_value=0, value=0, step=1
-        )
+      max_limit = st.number_input(
+          "擁有的最大值 (pt/張) (<= N):", min_value=0, value=0, step=1
+      )
 
-  sql_join = """
-          SELECT 
-              c.category_name AS '偶像種類',
-              i.idol_name AS '名稱',
-              COALESCE(i.ticket_name, '(無)') AS '票券種類',
-              r.required_amount AS '需求數量',
-              r.unit AS '單位',
-              r.reward_content AS '特典兌換內容',
-              i.base_ticket_price AS '基本拍券價格'
-          FROM redemption_items r
-          JOIN idols i ON r.idol_id = i.idol_id
-          JOIN categories c ON i.category_id = c.category_id
-          WHERE r.reward_content LIKE ?
-      """
-   params = [f"%{kw}%"]
+    sql_join = """
+        SELECT 
+            c.category_name AS '偶像種類',
+            i.idol_name AS '名稱',
+            COALESCE(i.ticket_name, '(無)') AS '特典券名稱',
+            r.required_amount AS '需求數量',
+            r.unit AS '單位',
+            r.reward_content AS '特典兌換內容',
+            i.base_ticket_price AS '基本拍券價格'
+        FROM redemption_items r
+        JOIN idols i ON r.idol_id = i.idol_id
+        JOIN categories c ON i.category_id = c.category_id
+        WHERE r.reward_content LIKE ?
+    """
+    params = [f"%{kw}%"]
 
     if category_filter != "全部":
       sql_join += " AND c.category_name = ?"
@@ -196,15 +198,15 @@ def main():
     st.subheader("🎁 初見無料與特殊優惠查詢")
     df_offers = pd.read_sql(
         """
-            SELECT 
-                c.category_name AS '偶像種類',
-                i.idol_name AS '名稱',
-                i.special_offers AS '特殊優惠',
-                i.base_ticket_price AS '基本拍券價格',
-                COALESCE(i.remarks, '') AS '備註'
-            FROM idols i
-            JOIN categories c ON i.category_id = c.category_id
-            WHERE i.special_offers IS NOT NULL
+        SELECT 
+            c.category_name AS '偶像種類',
+            i.idol_name AS '名稱',
+            i.special_offers AS '特殊優惠',
+            i.base_ticket_price AS '基本拍券價格',
+            COALESCE(i.remarks, '') AS '備註'
+        FROM idols i
+        JOIN categories c ON i.category_id = c.category_id
+        WHERE i.special_offers IS NOT NULL
         """,
         conn,
     )
