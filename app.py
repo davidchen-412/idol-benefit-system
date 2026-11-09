@@ -154,15 +154,15 @@ def main():
     col_s1, col_s2, col_s3 = st.columns([2, 1, 1])
     with col_s1:
       kw = st.text_input(
-          "Keyword Search (e.g., 私物簽, 影片, 快速通關, 手寫信):", "私物簽"
+          "關鍵字搜尋 (例如：私物簽, 影片, 快速通關, 手寫信):", "私物簽"
       )
     with col_s2:
       category_filter = st.selectbox(
-          "Filter by Category:", ["All Categories"] + list(cat_map.keys())
+          "Filter by Category:", ["全部"] + list(cat_map.keys())
       )
     with col_s3:
       max_limit = st.number_input(
-          "Max Points/Tickets (<= N, 0=Any):", min_value=0, value=0, step=5
+          "擁有的最大值(pt/張) (<= N, 0=Any):", min_value=0, value=0, step=1
       )
 
     sql_join = """
