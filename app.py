@@ -162,21 +162,21 @@ def main():
             "擁有的最大值 (pt/張) (<= N):", min_value=0, value=0, step=1
         )
 
-sql_join = """
-        SELECT 
-            c.category_name AS '偶像種類',
-            i.idol_name AS '名稱',
-            COALESCE(i.ticket_name, '(無)') AS '票券種類',
-            r.required_amount AS '需求數量',
-            r.unit AS '單位',
-            r.reward_content AS '特典兌換內容',
-            i.base_ticket_price AS '基本拍券價格'
-        FROM redemption_items r
-        JOIN idols i ON r.idol_id = i.idol_id
-        JOIN categories c ON i.category_id = c.category_id
-        WHERE r.reward_content LIKE ?
-    """
-      params = [f"%{kw}%"]
+  sql_join = """
+          SELECT 
+              c.category_name AS '偶像種類',
+              i.idol_name AS '名稱',
+              COALESCE(i.ticket_name, '(無)') AS '票券種類',
+              r.required_amount AS '需求數量',
+              r.unit AS '單位',
+              r.reward_content AS '特典兌換內容',
+              i.base_ticket_price AS '基本拍券價格'
+          FROM redemption_items r
+          JOIN idols i ON r.idol_id = i.idol_id
+          JOIN categories c ON i.category_id = c.category_id
+          WHERE r.reward_content LIKE ?
+      """
+   params = [f"%{kw}%"]
 
     if category_filter != "全部":
       sql_join += " AND c.category_name = ?"
