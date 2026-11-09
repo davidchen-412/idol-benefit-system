@@ -165,12 +165,12 @@ def main():
     sql_join = """
         SELECT 
             c.category_name AS '分類',
-            i.idol_name AS '偶像/團體名稱',
-            COALESCE(i.ticket_name, '(無)') AS '票券種類',
+            i.idol_name AS '偶像名稱',
+            COALESCE(i.ticket_name, '(無)') AS '特典券名稱',
             r.required_amount AS '需求數量',
             r.unit AS '單位',
-            r.reward_content AS '特典兌換內容',
-            i.base_ticket_price AS '基本票價'
+            r.reward_content AS '可兌換內容',
+            i.base_ticket_price AS '票券價格'
         FROM redemption_items r
         JOIN idols i ON r.idol_id = i.idol_id
         JOIN categories c ON i.category_id = c.category_id
@@ -178,12 +178,10 @@ def main():
     """
     params = [f"%{kw}%"]
 
-    # 修正 Bug 1：對應上方選單的「全部」
     if category_filter != "全部":
         sql_join += " AND c.category_name = ?"
         params.append(category_filter)
 
-    # 修正 Bug 2：移除 if max_limit > 0，讓 0 也會嚴格執行 <= 0 篩選
     sql_join += " AND r.required_amount <= ?"
     params.append(max_limit)
 
