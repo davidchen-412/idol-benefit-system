@@ -158,7 +158,7 @@ def main():
       )
     with col_s2:
       category_filter = st.selectbox(
-          "Filter by Category:", ["全部"] + list(cat_map.keys())
+          "Filter by Category:", ["All Categories"] + list(cat_map.keys())
       )
     with col_s3:
       max_limit = st.number_input(
