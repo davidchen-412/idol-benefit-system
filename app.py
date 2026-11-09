@@ -196,6 +196,10 @@ def main():
   # === Tab 3: 初見無料與特別優惠速查 ===
   with tab3:
     st.subheader("🎁 初見無料與特殊優惠查詢")
+    st.markdown(
+        "欄位可從最上方調整寬度，也可點選下方表格看完整內容"
+    )
+    
     df_offers = pd.read_sql(
         """
         SELECT 
