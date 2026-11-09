@@ -181,19 +181,24 @@ def main():
         """
     params = [f"%{kw}%"]
 
-    if category_filter != "All Categories":
+    if keyword_query:
+      sql_join += " AND (i.idol_name LIKE ? OR r.reward_description LIKE ? OR r.ticket_type LIKE ?)"
+      kw = f"%{keyword_query}%"
+      params.extend([kw, kw, kw])
+
+    if category_filter != "全部":
       sql_join += " AND c.category_name = ?"
       params.append(category_filter)
-
-    if max_limit > 0:
-      sql_join += " AND r.required_amount <= ?"
-      params.append(max_limit)
-
+  
     sql_join += " ORDER BY r.required_amount ASC"
 
     df_search = pd.read_sql(sql_join, conn, params=params)
-    st.write(f"Found **{len(df_search)}** matching redemption items:")
-    st.dataframe(df_search, use_container_width=True, hide_index=True)
+      st.markdown("---")
+      st.write(f"共找到 **{len(df_search)}** 個符合條件的兌換項目：")
+    if not df_search.empty:
+      st.dataframe(df_search, use_container_width=True, hide_index=True)
+    else:
+      st.warning("沒有找到符合條件的項目，請嘗試放寬篩選條件或調整數值。")
 
   # === Tab 3: 初見無料與特別優惠速查 ===
   with tab3:
