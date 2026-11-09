@@ -165,35 +165,43 @@ def main():
           "擁有的最大值 (pt/張) (<= N, 0=Any):", min_value=0, value=0, step=1
       )
 
-    sql_join = """
-            SELECT 
-                c.category_name AS 'Category',
-                i.idol_name AS 'Name',
-                COALESCE(i.ticket_name, '(None)') AS 'Ticket Type',
-                r.required_amount AS 'Required',
-                r.unit AS 'Unit',
-                r.reward_content AS 'Reward Description',
-                i.base_ticket_price AS 'Ticket Price'
-            FROM redemption_items r
-            JOIN idols i ON r.idol_id = i.idol_id
-            JOIN categories c ON i.category_id = c.category_id
-            WHERE r.reward_content LIKE ?
-        """
-    params = [f"%{kw}%"]
+    # 動態組合 SQL 查詢
+  sql_join = """
+        SELECT r.id, c.category_name AS '分類', i.idol_name AS '偶像/團體', 
+               r.ticket_type AS '票券類型', r.required_amount AS '所需數量', 
+               r.unit AS '單位', r.reward_description AS '兌換特典說明', 
+               i.base_ticket_price AS '基本票價'
+        FROM redemption_items r
+        JOIN idols i ON r.idol_id = i.id
+        JOIN categories c ON i.category_id = c.id
+        WHERE 1=1
+    """
+  params = []
 
-    if category_filter != "全部":
-      sql_join += " AND c.category_name = ?"
-      params.append(category_filter)
-      
-    if max_limit > 0:
-      sql_join += " AND r.required_amount <= ?"
-      params.append(max_limit)
+  # 關鍵字篩選
+  if keyword_query:
+    sql_join += " AND (i.idol_name LIKE ? OR r.reward_description LIKE ? OR r.ticket_type LIKE ?)"
+    kw = f"%{keyword_query}%"
+    params.extend([kw, kw, kw])
 
-    sql_join += " ORDER BY r.required_amount ASC"
+  # 分類篩選
+  if category_filter != "全部":
+    sql_join += " AND c.category_name = ?"
+    params.append(category_filter)
 
-    df_search = pd.read_sql(sql_join, conn, params=params)
-    st.write(f"Found **{len(df_search)}** matching redemption items:")
+  # 數量上限篩選（無論數值為何，均嚴格執行 <= 篩選）
+  sql_join += " AND r.required_amount <= ?"
+  params.append(max_limit)
+
+  sql_join += " ORDER BY r.required_amount ASC"
+
+  df_search = pd.read_sql(sql_join, conn, params=params)
+  st.markdown("---")
+  st.write(f"共找到 **{len(df_search)}** 個符合條件的兌換項目：")
+  if not df_search.empty:
     st.dataframe(df_search, use_container_width=True, hide_index=True)
+  else:
+    st.warning("沒有找到符合條件的項目，請嘗試放寬篩選條件或調整數值。")
 
   # === Tab 3: 初見無料與特別優惠速查 ===
   with tab3:
