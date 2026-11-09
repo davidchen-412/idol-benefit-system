@@ -185,7 +185,6 @@ def main():
       sql_join += " AND c.category_name = ?"
       params.append(category_filter)
 
-    if max_limit > 0:
       sql_join += " AND r.required_amount <= ?"
       params.append(max_limit)
 
