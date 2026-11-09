@@ -143,56 +143,54 @@ def main():
           hide_index=True,
       )
 
-  # === Tab 2: 跨團進階搜尋與過濾 ===
-  with tab2:
+# === Tab 2: 跨團進階搜尋與過濾 ===
+with tab2:
     st.subheader("🔎 特典兌換項目進階搜尋與篩選")
-    st.markdown(
-        "Combine keywords and ticket price filters to search across all"
-        " categories simultaneously."
-    )
+    st.markdown("結合關鍵字、偶像種類與擁有的點數/張數上限，跨分類同步搜尋所有特典兌換項目。")
 
     col_s1, col_s2, col_s3 = st.columns([2, 1, 1])
     with col_s1:
-      kw = st.text_input(
-          "關鍵字搜尋 (例如：私物簽, 影片, 快速通關, 手寫信):", "私物簽"
-      )
+        kw = st.text_input(
+            "關鍵字搜尋 (例如：私物簽, 影片, 快速通關, 手寫信):", "私物簽"
+        )
     with col_s2:
-      category_filter = st.selectbox(
-          "選擇偶像種類 (團體/個人):", ["全部"] + list(cat_map.keys())
-      )
+        category_filter = st.selectbox(
+            "選擇偶像種類 (團體/個人):", ["全部"] + list(cat_map.keys())
+        )
     with col_s3:
-      max_limit = st.number_input(
-          "擁有的最大值 (pt/張) (<= N, 0=Any):", min_value=0, value=0, step=1
-      )
-      
+        max_limit = st.number_input(
+            "擁有的最大值 (pt/張) (<= N):", min_value=0, value=0, step=1
+        )
+
     sql_join = """
-            SELECT 
-                c.category_name AS 'Category',
-                i.idol_name AS 'Name',
-                COALESCE(i.ticket_name, '(None)') AS 'Ticket Type',
-                r.required_amount AS 'Required',
-                r.unit AS 'Unit',
-                r.reward_content AS 'Reward Description',
-                i.base_ticket_price AS 'Ticket Price'
-            FROM redemption_items r
-            JOIN idols i ON r.idol_id = i.idol_id
-            JOIN categories c ON i.category_id = c.category_id
-            WHERE r.reward_content LIKE ?
-        """
+        SELECT 
+            c.category_name AS '分類',
+            i.idol_name AS '偶像/團體名稱',
+            COALESCE(i.ticket_name, '(無)') AS '票券種類',
+            r.required_amount AS '需求數量',
+            r.unit AS '單位',
+            r.reward_content AS '特典兌換內容',
+            i.base_ticket_price AS '基本票價'
+        FROM redemption_items r
+        JOIN idols i ON r.idol_id = i.idol_id
+        JOIN categories c ON i.category_id = c.category_id
+        WHERE r.reward_content LIKE ?
+    """
     params = [f"%{kw}%"]
 
-    if category_filter != "All Categories":
-      sql_join += " AND c.category_name = ?"
-      params.append(category_filter)
+    # 修正 Bug 1：對應上方選單的「全部」
+    if category_filter != "全部":
+        sql_join += " AND c.category_name = ?"
+        params.append(category_filter)
 
-    if max_limit > 0:
-      sql_join += " AND r.required_amount <= ?"
-      params.append(max_limit)
+    # 修正 Bug 2：移除 if max_limit > 0，讓 0 也會嚴格執行 <= 0 篩選
+    sql_join += " AND r.required_amount <= ?"
+    params.append(max_limit)
 
     sql_join += " ORDER BY r.required_amount ASC"
 
     df_search = pd.read_sql(sql_join, conn, params=params)
-    st.write(f"Found **{len(df_search)}** matching redemption items:")
+    st.write(f"共找到 **{len(df_search)}** 筆符合條件的特典兌換項目：")
     st.dataframe(df_search, use_container_width=True, hide_index=True)
 
   # === Tab 3: 初見無料與特別優惠速查 ===
