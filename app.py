@@ -169,6 +169,7 @@ def main():
             c.category_name AS '偶像種類',
             i.idol_name AS '名稱',
             COALESCE(i.ticket_name, '(無)') AS '特典券名稱',
+            COALESCE(i.point_rule, '(無)') AS '兌換規則',
             r.required_amount AS '需求數量',
             r.unit AS '單位',
             r.reward_content AS '特典兌換內容',
