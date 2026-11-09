@@ -137,7 +137,7 @@ def main():
       filtered["Threshold"] = filtered.apply(format_threshold, axis=1)
       st.dataframe(
           filtered[["Threshold", "reward_content"]].rename(
-              columns={"Threshold": "數量", "reward_content": "可兌換項目"}
+              columns={"Threshold": "累積數量", "reward_content": "兌換項目 (可點選下方表格看完整內容)"}
           ),
           use_container_width=True,
           hide_index=True,
