@@ -117,7 +117,7 @@ def main():
             else "pts/tickets"
         )
         user_pts = st.slider(
-            f"💡 拖曳下方紅點並按照您目前的特典券點數進行兌換項目篩選 ({unit_label}):",
+            f"💡 拖曳下方紅點至您目前的特典券點數，以進行兌換項目篩選 ({unit_label}):",
             min_value=0,
             max_value=max_pts,
             value=max_pts,
