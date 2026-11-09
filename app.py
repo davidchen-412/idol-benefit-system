@@ -158,11 +158,11 @@ def main():
       )
     with col_s2:
       category_filter = st.selectbox(
-          "Filter by Category:", ["全部"] + list(cat_map.keys())
+          "選擇偶像種類 (團體/個人):", ["全部"] + list(cat_map.keys())
       )
     with col_s3:
       max_limit = st.number_input(
-          "擁有的最大值(pt/張) (<= N, 0=Any):", min_value=0, value=0, step=1
+          "擁有的最大值 (pt/張) (<= N, 0=Any):", min_value=0, value=0, step=1
       )
 
     sql_join = """
