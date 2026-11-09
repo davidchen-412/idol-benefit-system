@@ -176,7 +176,7 @@ sql_join = """
         JOIN categories c ON i.category_id = c.category_id
         WHERE r.reward_content LIKE ?
     """
-    params = [f"%{kw}%"]
+      params = [f"%{kw}%"]
 
     if category_filter != "全部":
       sql_join += " AND c.category_name = ?"
