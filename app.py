@@ -203,7 +203,7 @@ def main():
             FROM idols i
             JOIN categories c ON i.category_id = c.category_id
             WHERE i.special_offers IS NOT NULL
-        """,
+    """,
         conn,
     )
     st.dataframe(df_offers, use_container_width=True, hide_index=True)
