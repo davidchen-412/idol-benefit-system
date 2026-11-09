@@ -181,7 +181,7 @@ def main():
         """
     params = [f"%{kw}%"]
 
-    if category_filter != "All Categories":
+    if category_filter != "全部":
       sql_join += " AND c.category_name = ?"
       params.append(category_filter)
 
