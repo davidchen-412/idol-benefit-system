@@ -134,10 +134,10 @@ def main():
           return "Special"
         return f"{int(row['required_amount'])} {row['unit'] or ''}".strip()
 
-      filtered["數量"] = filtered.apply(format_threshold, axis=1)
+      filtered["Threshold"] = filtered.apply(format_threshold, axis=1)
       st.dataframe(
           filtered[["Threshold", "reward_content"]].rename(
-              columns={"reward_content": "可兌換項目"}
+              columns={"reward_content": "Reward Description"}
           ),
           use_container_width=True,
           hide_index=True,
