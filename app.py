@@ -29,6 +29,9 @@ def main():
 
   conn = sqlite3.connect(db_path)
   st.title("🎤 台灣日系地下偶像拍券/特典點數使用規則查詢系統")
+  st.markdown(
+    "本網站資料蒐集目前為人工更新為主，所有資料(拍券價格、特典兌換規則)請以各偶像(團體/個人)官方公告及物販現場為準"
+)
 
   df_cats = pd.read_sql("SELECT * FROM categories", conn)
   if df_cats.empty:
