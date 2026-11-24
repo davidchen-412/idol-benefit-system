@@ -176,8 +176,7 @@ def main():
             r.required_amount AS '需求數量',
             r.unit AS '單位',
             r.reward_content AS '可兌換內容',
-            i.base_ticket_price AS '基本拍券價格',
-            COALESCE(i.remarks, '') AS '備註'
+            i.base_ticket_price AS '基本拍券價格'
         FROM redemption_items r
         JOIN idols i ON r.idol_id = i.idol_id
         JOIN categories c ON i.category_id = c.category_id
@@ -211,7 +210,8 @@ def main():
             c.category_name AS '偶像種類',
             i.idol_name AS '名稱',
             i.special_offers AS '特殊優惠',
-            i.base_ticket_price AS '基本拍券價格'
+            i.base_ticket_price AS '基本拍券價格',
+            COALESCE(i.remarks, '') AS '備註'
         FROM idols i
         JOIN categories c ON i.category_id = c.category_id
         WHERE i.special_offers IS NOT NULL
