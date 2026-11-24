@@ -138,7 +138,7 @@ def main():
           filtered[["Threshold", "reward_content"]].rename(
               columns={
                   "Threshold": "累積數量",
-                  "reward_content": "兌換項目 (可點選下方表格看完整內容)",
+                  "reward_content": "兌換項目 (欄位寬度可調整，也可點選下方表格看完整內容)",
               }
           ),
           use_container_width=True,
